@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/06/28 16:24:20 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/06/28 16:53:11 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ char	**parse_line(const char *s);
 void	free_split(char **split);
 
 void	builtin_echo(char **args);
+void	builtin_pwd(void);
+void	builtin_env(char **envp);
+void	builtin_exit(char **args);
 
 
 
