@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/02 23:22:10 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/03 00:04:13 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ void	builtin_exit(char **args);
 void	builtin_cd(char **args, char **envp);
 void	builtin_unset(char **args, char ***my_env);
 char	**dup_env(char **envp);
+
+char	**add_to_env(char **env, char *new_var);
+void	builtin_export(char **args, char ***my_env);
 
 
 

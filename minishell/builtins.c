@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 16:22:05 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/02 23:25:10 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/03 00:05:03 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,4 +127,46 @@ void	builtin_unset(char **args, char ***my_env)
 		i++;
 	}
 }
+
+void	builtin_export(char **args, char ***my_env)
+{
+	int		i;
+	int		len;
+	int		j;
+	char	**new_env;
+
+	i = 0;
+	while (args[i])
+	{
+		len = 0;
+		while (args[i][len] && args[i][len] != '=')
+			len++;
+		if (!args[i][len])
+		{
+			printf("export: invalid format: %s\n", args[i]);
+			i++;
+			continue ;
+		}
+		j = 0;
+		while ((*my_env)[j])
+		{
+			if (ft_strncmp((*my_env)[j], args[i], len) == 0
+				&& (*my_env)[j][len] == '=')
+			{
+				free((*my_env)[j]);
+				(*my_env)[j] = ft_strdup(args[i]);
+				break ;
+			}
+			j++;
+		}
+		if (!(*my_env)[j])
+		{
+			new_env = add_to_env(*my_env, args[i]);
+			free_split(*my_env);
+			*my_env = new_env;
+		}
+		i++;
+	}
+}
+
 

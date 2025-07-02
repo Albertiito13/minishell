@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/02 23:24:45 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/03 00:35:53 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ int	main(int argc, char **argv, char **envp)
 				builtin_env(my_env);
 			else if (ft_strncmp(args[0], "unset", 6) == 0)
 				builtin_unset(&args[1], &my_env);
+			else if (ft_strncmp(args[0], "export", 7) == 0)
+				builtin_export(&args[1], &my_env);
 			else if (ft_strncmp(args[0], "cd", 3) == 0)
 				builtin_cd(&args[1], my_env);
 			else if (ft_strncmp(args[0], "exit", 5) == 0)
