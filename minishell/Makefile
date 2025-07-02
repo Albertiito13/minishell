@@ -6,12 +6,12 @@
 #    By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 00:04:03 by albcamac          #+#    #+#              #
-#    Updated: 2025/06/28 16:24:31 by albcamac         ###   ########.fr        #
+#    Updated: 2025/07/02 23:26:03 by albcamac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= minishell
-SRC 		= minishell.c parse_line.c builtins.c
+SRC 		= minishell.c parse_line.c builtins.c env_utils.c
 OBJ 		= $(SRC:.c=.o)
 CC 			= cc
 CFLAGS 		= -Wall -Wextra -Werror

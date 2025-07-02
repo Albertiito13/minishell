@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 16:22:05 by albcamac          #+#    #+#             */
-/*   Updated: 2025/06/28 16:53:00 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/02 23:25:10 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,13 @@ void	builtin_echo(char **args)
 	}
 	while (args[i])
 	{
-		printf("%s", args[i]);
+		ft_printf("%s", args[i]);
 		if (args[i + 1])
-			printf(" ");
+			ft_printf(" ");
 		i++;
 	}
 	if (newline)
-		printf("\n");
+		ft_printf("\n");
 }
 
 void	builtin_pwd(void)
@@ -40,7 +40,7 @@ void	builtin_pwd(void)
 	char	cwd[1024];
 
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
-		printf("%s\n", cwd);
+		ft_printf("%s\n", cwd);
 	else
 		perror("pwd");
 }
@@ -52,7 +52,7 @@ void	builtin_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		printf("%s\n", envp[i]);
+		ft_printf("%s\n", envp[i]);
 		i++;
 	}
 }
@@ -62,7 +62,7 @@ void	builtin_exit(char **args)
 	int	status;
 
 	status = 0;
-	printf("exit\n");
+	ft_printf("exit\n");
 	if (args[0])
 	{
 		status = ft_atoi(args[0]);
@@ -71,4 +71,60 @@ void	builtin_exit(char **args)
 	exit(status);
 }
 
+void	builtin_cd(char **args, char **envp)
+{
+	char	*path;
+	char	*home;
+
+	(void)envp;
+	path = NULL;
+	home = NULL;
+	if (!args[0])
+	{
+		home = getenv("HOME");
+		if (!home)
+		{
+			ft_printf("cd: HOME not set\n");
+			return ;
+		}
+		path = home;
+	}
+	else
+		path = args[0];
+	if (chdir(path) != 0)
+		perror("cd");
+}
+
+void	builtin_unset(char **args, char ***my_env)
+{
+	int		i;
+	char	**new_env;
+	int		j;
+	int		count;
+
+	i = 0;
+	while (args[i])
+	{
+		count = 0;
+		while ((*my_env)[count])
+			count++;
+		new_env = malloc(sizeof(char *) * (count));
+		if (!new_env)
+			return ;
+		j = 0;
+		count = 0;
+		while ((*my_env)[count])
+		{
+			if (ft_strncmp((*my_env)[count], args[i],
+					ft_strlen(args[i])) != 0
+				|| (*my_env)[count][ft_strlen(args[i])] != '=')
+				new_env[j++] = ft_strdup((*my_env)[count]);
+			count++;
+		}
+		new_env[j] = NULL;
+		free_split(*my_env);
+		*my_env = new_env;
+		i++;
+	}
+}
 
