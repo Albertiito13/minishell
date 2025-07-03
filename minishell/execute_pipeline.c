@@ -6,11 +6,34 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:00:53 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/03 17:01:35 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:53:23 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	is_builtin(char **args)
+{
+	if (!args || !args[0])
+		return (0);
+	if (ft_strncmp(args[0], "echo", 5) == 0)
+		return (1);
+	if (ft_strncmp(args[0], "pwd", 4) == 0)
+		return (1);
+	if (ft_strncmp(args[0], "env", 4) == 0)
+		return (1);
+	return (0);
+}
+
+static void	execute_builtin_in_child(char **args, char ***my_env)
+{
+	if (ft_strncmp(args[0], "echo", 5) == 0)
+		builtin_echo(&args[1]);
+	else if (ft_strncmp(args[0], "pwd", 4) == 0)
+		builtin_pwd();
+	else if (ft_strncmp(args[0], "env", 4) == 0)
+		builtin_env(*my_env);
+}
 
 void	execute_pipeline(char **segments, char **my_env)
 {
@@ -34,17 +57,14 @@ void	execute_pipeline(char **segments, char **my_env)
 				dup2(fd[1], 1);
 			close(fd[0]);
 			args = parse_line(segments[i]);
-			if (!args || !args[0])
-				exit(0);
+			if (is_builtin(args))
+				(execute_builtin_in_child(args, &my_env), exit(0));
 			if (access(args[0], X_OK) == 0)
 				path = ft_strdup(args[0]);
 			else
 				path = find_executable(args[0], my_env);
 			if (!path)
-			{
-				printf("%s: command not found\n", args[0]);
-				exit(127);
-			}
+				(printf("%s: command not found\n", args[0]), exit(127));
 			execve(path, args, my_env);
 		}
 		else
@@ -56,3 +76,4 @@ void	execute_pipeline(char **segments, char **my_env)
 		i++;
 	}
 }
+
