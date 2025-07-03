@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/03 00:35:53 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:03:50 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ int	main(int argc, char **argv, char **envp)
 				builtin_cd(&args[1], my_env);
 			else if (ft_strncmp(args[0], "exit", 5) == 0)
 				builtin_exit(&args[1]);
+			else
+			{
+				if (ft_strchr(line, '|'))
+				{
+					char **segments = ft_split(line, '|');
+					execute_pipeline(segments, my_env);
+					free_split(segments);
+				}
+				else
+					execute_external(args, my_env);
+			}
 		}
 		free_split(args);
 		free(line);

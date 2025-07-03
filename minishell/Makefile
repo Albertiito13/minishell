@@ -6,12 +6,13 @@
 #    By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 00:04:03 by albcamac          #+#    #+#              #
-#    Updated: 2025/07/02 23:26:03 by albcamac         ###   ########.fr        #
+#    Updated: 2025/07/03 17:03:16 by albcamac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= minishell
-SRC 		= minishell.c parse_line.c builtins.c env_utils.c
+SRC 		= minishell.c parse_line.c builtins.c env_utils.c \
+							execute.c execute_pipeline.c
 OBJ 		= $(SRC:.c=.o)
 CC 			= cc
 CFLAGS 		= -Wall -Wextra -Werror

@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/03 00:04:13 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/03 17:05:19 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ char	**dup_env(char **envp);
 
 char	**add_to_env(char **env, char *new_var);
 void	builtin_export(char **args, char ***my_env);
+
+void	execute_external(char **args, char **envp);
+void	execute_pipeline(char **segments, char **my_env);
+char	*find_executable(char *cmd, char **envp);
 
 
 
