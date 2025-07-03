@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/03 17:05:19 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/03 18:17:37 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	execute_external(char **args, char **envp);
 void	execute_pipeline(char **segments, char **my_env);
 char	*find_executable(char *cmd, char **envp);
 
-
+//signals
+void	handle_sigint(int sig);
 
 #endif

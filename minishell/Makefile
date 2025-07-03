@@ -3,16 +3,24 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+         #
+#    By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 00:04:03 by albcamac          #+#    #+#              #
+<<<<<<< HEAD
 #    Updated: 2025/07/03 17:03:16 by albcamac         ###   ########.fr        #
+=======
+#    Updated: 2025/07/03 17:52:45 by alegarci         ###   ########.fr        #
+>>>>>>> calero
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= minishell
+<<<<<<< HEAD
 SRC 		= minishell.c parse_line.c builtins.c env_utils.c \
 							execute.c execute_pipeline.c
+=======
+SRC 		= minishell.c parse_line.c builtins.c env_utils.c signals/signals.c
+>>>>>>> calero
 OBJ 		= $(SRC:.c=.o)
 CC 			= cc
 CFLAGS 		= -Wall -Wextra -Werror
