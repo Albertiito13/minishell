@@ -6,13 +6,13 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:39:38 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/03 17:05:07 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/04 02:58:28 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*ft_strjoin_free(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	char	*joined;
 
@@ -39,7 +39,7 @@ char	*find_executable(char *cmd, char **envp)
 	while (paths && paths[i])
 	{
 		full_path = ft_strjoin(paths[i], "/");
-		full_path = ft_strjoin_free(full_path, cmd); // join y free intermedio
+		full_path = ft_strjoin_free(full_path, cmd);
 		if (access(full_path, X_OK) == 0)
 			return (free_split(paths), full_path);
 		free(full_path);

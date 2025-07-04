@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:00:53 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/03 17:53:23 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/04 02:32:14 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,45 +35,86 @@ static void	execute_builtin_in_child(char **args, char ***my_env)
 		builtin_env(*my_env);
 }
 
+static void	run_command_in_child(char *segment, int in_fd, int *fd, char **my_env)
+{
+	char	**args;
+	char	*path;
+
+	dup2(in_fd, 0);
+	if (fd != NULL)
+		dup2(fd[1], 1);
+	if (fd != NULL)
+		(close(fd[0]), close(fd[1]));
+	if (in_fd != 0)
+		close(in_fd);
+	args = parse_line(segment);
+	if (is_builtin(args))
+		(execute_builtin_in_child(args, &my_env), exit(0));
+	if (access(args[0], X_OK) == 0)
+		path = ft_strdup(args[0]);
+	else
+		path = find_executable(args[0], my_env);
+	if (!path)
+		(printf("%s: command not found\n", args[0]), exit(127));
+	execve(path, args, my_env);
+}
+
+static int	create_child(char *segment, int in_fd, int *fd, char **my_env)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+		run_command_in_child(segment, in_fd, fd, my_env);
+	return (pid);
+}
+
+static void	wait_pipeline(pid_t last_pid)
+{
+	pid_t	wpid;
+	int		status;
+
+	while ((wpid = wait(&status)) > 0)
+	{
+		if (wpid == last_pid)
+		{
+			if (WIFEXITED(status))
+				g_exit_status = WEXITSTATUS(status);
+			else
+				g_exit_status = 1;
+		}
+	}
+}
+
 void	execute_pipeline(char **segments, char **my_env)
 {
 	int		fd[2];
 	int		in_fd;
-	pid_t	pid;
 	int		i;
-	char	**args;
-	char	*path;
+	pid_t	pid;
+	pid_t	last_pid;
 
 	in_fd = 0;
 	i = 0;
 	while (segments[i])
 	{
-		pipe(fd);
-		pid = fork();
-		if (pid == 0)
+		if (segments[i + 1])
 		{
-			dup2(in_fd, 0);
-			if (segments[i + 1])
-				dup2(fd[1], 1);
-			close(fd[0]);
-			args = parse_line(segments[i]);
-			if (is_builtin(args))
-				(execute_builtin_in_child(args, &my_env), exit(0));
-			if (access(args[0], X_OK) == 0)
-				path = ft_strdup(args[0]);
-			else
-				path = find_executable(args[0], my_env);
-			if (!path)
-				(printf("%s: command not found\n", args[0]), exit(127));
-			execve(path, args, my_env);
+			pipe(fd);
+			pid = create_child(segments[i], in_fd, fd, my_env);
+			close(fd[1]);
+			if (in_fd != 0)
+				close(in_fd);
+			in_fd = fd[0];
 		}
 		else
 		{
-			wait(NULL);
-			close(fd[1]);
-			in_fd = fd[0];
+			pid = create_child(segments[i], in_fd, NULL, my_env);
+			if (in_fd != 0)
+				close(in_fd);
 		}
+		last_pid = pid;
 		i++;
 	}
+	wait_pipeline(last_pid);
 }
-

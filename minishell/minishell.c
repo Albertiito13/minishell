@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/03 18:18:01 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/04 03:04:55 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_exit_status = 0;
+
+// para detectar que es un pipe y no entre en conflicto con ||
+static int	has_simple_pipe(char **args)
+{
+	int i = 0;
+	while (args[i])
+	{
+		if (ft_strncmp(args[i], "|", 2) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -34,10 +50,12 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (*line)
 			add_history(line);
-		args = parse_line(line);
+		char *expanded = expand_var(line, my_env);
+		args = parse_line(expanded);
+		free(expanded);
 		if (args && args[0])
 		{
-			if (ft_strchr(line, '|'))
+			if (has_simple_pipe(args))
 			{
 				char **segments = ft_split(line, '|');
 				execute_pipeline(segments, my_env);

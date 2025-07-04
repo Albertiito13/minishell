@@ -6,83 +6,69 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:58:54 by albcamac          #+#    #+#             */
-/*   Updated: 2025/06/28 16:16:02 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/04 02:57:47 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	count_tokens(const char *s)
+static char	*parse_quoted(const char **s, char quote)
 {
-	int		count;
-	char	quote;
+	const char	*start;
+	char		*content;
 
-	count = 0;
+	(*s)++;
+	start = *s;
+	while (**s && **s != quote)
+		(*s)++;
+	content = ft_substr(start, 0, *s - start);
+	if (**s == quote)
+		(*s)++;
+	return (content);
+}
+
+static char	*parse_token(const char **s)
+{
+	char		*token;
+	char		*part;
+	const char	*start;
+
+	token = ft_calloc(1, 1);
+	while (**s && **s != ' ' && **s != '\t')
+	{
+		if (**s == '\'' || **s == '"')
+			part = parse_quoted(s, **s - 0);
+		else
+		{
+			start = *s;
+			while (**s && **s != ' ' && **s != '\t'
+				&& **s != '\'' && **s != '"')
+				(*s)++;
+			part = ft_substr(start, 0, *s - start);
+		}
+		token = ft_strjoin_free(token, part);
+		free(part);
+	}
+	return (token);
+}
+
+char	**parse_line(const char *s)
+{
+	char	**tokens;
+	int		i;
+
+	tokens = malloc(sizeof(char *) * (ft_strlen(s) + 2));
+	if (!tokens)
+		return (NULL);
+	i = 0;
 	while (*s)
 	{
 		while (*s && (*s == ' ' || *s == '\t'))
 			s++;
 		if (*s)
 		{
-			count++;
-			if (*s == '\'' || *s == '"')
-			{
-				quote = *s++;
-				while (*s && *s != quote)
-					s++;
-				if (*s)
-					s++;
-			}
-			else
-			{
-				while (*s && *s != ' ' && *s != '\t'
-					&& *s != '\'' && *s != '"')
-					s++;
-			}
-		}
-	}
-	return (count);
-}
-
-char	**parse_line(const char *s)
-{
-	char		**tokens;
-	const char	*start;
-	size_t		len;
-	int			i;
-	char		quote;
-
-	i = 0;
-	if (!s)
-		return (NULL);
-	tokens = malloc(sizeof(char *) * (count_tokens(s) + 1));
-	if (!tokens)
-		return (NULL);
-	while (*s)
-	{
-		while (*s && (*s == ' ' || *s == '\t'))
-			s++;
-		if (!*s)
-			break ;
-		if (*s == '\'' || *s == '"')
-		{
-			quote = *s++;
-			start = s;
-			while (*s && *s != quote)
-				s++;
-			len = s - start;
-			tokens[i++] = ft_substr(start, 0, len);
-			if (*s == quote)
-				s++;
-		}
-		else
-		{
-			start = s;
-			while (*s && *s != ' ' && *s != '\t'
-				&& *s != '\'' && *s != '"')
-				s++;
-			len = s - start;
-			tokens[i++] = ft_substr(start, 0, len);
+			tokens[i] = parse_token(&s);
+			i++;
 		}
 	}
 	tokens[i] = NULL;
@@ -91,9 +77,11 @@ char	**parse_line(const char *s)
 
 void	free_split(char **split)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	if (!split)
-		return;
+		return ;
 	while (split[i])
 		free(split[i++]);
 	free(split);

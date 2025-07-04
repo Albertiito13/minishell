@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 23:05:31 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/03 00:03:25 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/04 02:58:05 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,3 +63,18 @@ char	**add_to_env(char **env, char *new_var)
 	return (new_env);
 }
 
+char	*get_env_value(char *var, char **my_env)
+{
+	int		i;
+	int		len;
+
+	i = 0;
+	len = ft_strlen(var);
+	while (my_env && my_env[i])
+	{
+		if (ft_strncmp(my_env[i], var, len) == 0 && my_env[i][len] == '=')
+			return (my_env[i] + len + 1);
+		i++;
+	}
+	return (NULL);
+}
