@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:00:53 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/04 02:32:14 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/04 20:31:37 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static void	wait_pipeline(pid_t last_pid)
 	pid_t	wpid;
 	int		status;
 
+	status = 0;
 	while ((wpid = wait(&status)) > 0)
 	{
 		if (wpid == last_pid)

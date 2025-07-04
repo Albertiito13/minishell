@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/04 03:06:31 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/04 19:57:46 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,8 @@ char	*find_executable(char *cmd, char **envp);
 
 //signals
 void	handle_sigint(int sig);
+void	handle_sigquit(int sig);
+void	setup_prompt_signals(void);
+void	check_child_signal(int status);
 
 #endif
