@@ -6,7 +6,7 @@
 /*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/04 20:23:46 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/06 17:30:29 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static int	has_simple_pipe(char **args)
 	}
 	return (0);
 }
-
 
 int	main(int argc, char **argv, char **envp)
 {

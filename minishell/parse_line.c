@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:58:54 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/04 02:57:47 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/06 13:18:14 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@ static char	*parse_token(const char **s)
 	char		*part;
 	const char	*start;
 
+	if (is_special_token(*s))
+		return (parse_special_token(s));
 	token = ft_calloc(1, 1);
-	while (**s && **s != ' ' && **s != '\t')
+	while (**s && **s != ' ' && **s != '\t' && !is_special_token(*s))
 	{
 		if (**s == '\'' || **s == '"')
 			part = parse_quoted(s, **s - 0);
@@ -42,7 +44,8 @@ static char	*parse_token(const char **s)
 		{
 			start = *s;
 			while (**s && **s != ' ' && **s != '\t'
-				&& **s != '\'' && **s != '"')
+				&& **s != '\'' && **s != '"'
+				&& !is_special_token(*s))
 				(*s)++;
 			part = ft_substr(start, 0, *s - start);
 		}

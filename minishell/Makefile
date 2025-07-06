@@ -3,16 +3,18 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+         #
+#    By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 00:04:03 by albcamac          #+#    #+#              #
-#    Updated: 2025/07/04 01:39:19 by albcamac         ###   ########.fr        #
+#    Updated: 2025/07/06 17:15:08 by alegarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= minishell
 SRC 		= minishell.c parse_line.c builtins.c env_utils.c signals/signals.c \
-				execute.c execute_pipeline.c expand_var.c
+				execute.c execute_pipeline.c expand_var.c \
+				redirections/tokens.c redirections/parse_redirections.c \
+				redirections/redirections.c redirections/redirections_utils.c
 OBJ 		= $(SRC:.c=.o)
 CC 			= cc
 CFLAGS 		= -Wall -Wextra -Werror
