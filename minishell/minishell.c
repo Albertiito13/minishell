@@ -6,7 +6,7 @@
 /*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/06 17:30:29 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:18:30 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,41 @@ static int	has_simple_pipe(char **args)
 	return (0);
 }
 
-int	main(int argc, char **argv, char **envp)
+ static void	process_command(char **args, char ***env, char *line)
+{
+	if (has_simple_pipe(args))
+	{
+		char **segments = ft_split(line, '|');
+		execute_pipeline(segments, *env);
+		free_split(segments);
+	}
+	else if (ft_strncmp(args[0], "echo", 5) == 0)
+		builtin_echo(&args[1]);
+	else if (ft_strncmp(args[0], "pwd", 4) == 0)
+		builtin_pwd();
+	else if (ft_strncmp(args[0], "env", 4) == 0)
+		builtin_env(*env);
+	else if (ft_strncmp(args[0], "unset", 6) == 0)
+		builtin_unset(&args[1], env);
+	else if (ft_strncmp(args[0], "export", 7) == 0)
+		builtin_export(&args[1], env);
+	else if (ft_strncmp(args[0], "cd", 3) == 0)
+		builtin_cd(&args[1], *env);
+	else if (ft_strncmp(args[0], "exit", 5) == 0)
+		builtin_exit(&args[1]);
+	else
+		execute_external(args, *env);
+}
+
+static void	main_loop(char ***env)
 {
 	char	*line;
 	char	**args;
-	char	**my_env;
+	char	*expanded;
 
-	(void)argc;
-	(void)argv;
-	my_env = dup_env(envp);
-
-	setup_prompt_signals();
 	while (1)
 	{
+		setup_prompt_signals();
 		line = readline("minishell$ ");
 		if (!line)
 		{
@@ -48,37 +70,25 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (*line)
 			add_history(line);
-		char *expanded = expand_var(line, my_env);
+		expanded = expand_var(line, *env);
 		args = parse_line(expanded);
 		free(expanded);
 		if (args && args[0])
-		{
-			if (has_simple_pipe(args))
-			{
-				char **segments = ft_split(line, '|');
-				execute_pipeline(segments, my_env);
-				free_split(segments);
-			}
-			else if (ft_strncmp(args[0], "echo", 5) == 0)
-				builtin_echo(&args[1]);
-			else if (ft_strncmp(args[0], "pwd", 4) == 0)
-				builtin_pwd();
-			else if (ft_strncmp(args[0], "env", 4) == 0)
-				builtin_env(my_env);
-			else if (ft_strncmp(args[0], "unset", 6) == 0)
-				builtin_unset(&args[1], &my_env);
-			else if (ft_strncmp(args[0], "export", 7) == 0)
-				builtin_export(&args[1], &my_env);
-			else if (ft_strncmp(args[0], "cd", 3) == 0)
-				builtin_cd(&args[1], my_env);
-			else if (ft_strncmp(args[0], "exit", 5) == 0)
-				builtin_exit(&args[1]);
-			else
-				execute_external(args, my_env);
-		}
+			process_command(args, env, line);
 		free_split(args);
 		free(line);
 	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	char	**my_env;
+
+	(void)argc;
+	(void)argv;
+	my_env = dup_env(envp);
+	setup_prompt_signals();
+	main_loop(&my_env);
 	free_split(my_env);
 	return (0);
 }

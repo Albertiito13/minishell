@@ -6,7 +6,7 @@
 /*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:47:34 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/04 19:55:57 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:19:09 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ void setup_prompt_signals(void)
 {
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
+}
+
+void setup_exec_signals(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
 
 void	check_child_signal(int status)

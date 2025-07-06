@@ -6,7 +6,7 @@
 /*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/06 17:34:26 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:19:15 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,15 @@ void			builtin_export(char **args, char ***my_env);
 void			execute_external(char **args, char **envp);
 void			execute_pipeline(char **segments, char **my_env);
 char			*find_executable(char *cmd, char **envp);
+void			run_command_in_child(char *segment, int in_fd, int *fd, char **my_env);
+
 
 //signals
 void			handle_sigint(int sig);
 void			handle_sigquit(int sig);
-void			setup_prompt_signals(void);
 void			check_child_signal(int status);
+void			setup_prompt_signals(void);
+void 			setup_exec_signals(void);
 
 //redirections
 int				handle_heredoc(char *delimiter);

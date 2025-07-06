@@ -6,7 +6,7 @@
 /*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:00:53 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/04 20:31:37 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/06 20:20:11 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	execute_builtin_in_child(char **args, char ***my_env)
 		builtin_env(*my_env);
 }
 
-static void	run_command_in_child(char *segment, int in_fd, int *fd, char **my_env)
+void	run_command_in_child(char *segment, int in_fd, int *fd, char **my_env)
 {
 	char	**args;
 	char	*path;
