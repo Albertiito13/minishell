@@ -6,18 +6,20 @@
 /*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/06 20:18:30 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/08 00:31:01 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_exit_status = 0;
+int	g_exit_status = 0;
 
 // para detectar que es un pipe y no entre en conflicto con ||
 static int	has_simple_pipe(char **args)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (args[i])
 	{
 		if (ft_strncmp(args[i], "|", 2) == 0)
@@ -27,11 +29,13 @@ static int	has_simple_pipe(char **args)
 	return (0);
 }
 
- static void	process_command(char **args, char ***env, char *line)
+static void	process_command(char **args, char ***env, char *line)
 {
+	char	**segments;
+
 	if (has_simple_pipe(args))
 	{
-		char **segments = ft_split(line, '|');
+		segments = ft_split(line, '|');
 		execute_pipeline(segments, *env);
 		free_split(segments);
 	}
