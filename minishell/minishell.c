@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 14:10:02 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:14:03 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,30 @@ static int	has_simple_pipe(char **args)
 	return (0);
 }
 
-static void	execute_command(t_cmd *cmd, char ***env)
+static void	run_external_command(t_cmd *cmd, char ***env)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		setup_exec_signals();
+		execute_external(cmd->argv, *env);
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		check_child_signal(status);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+		else
+			g_exit_status = 128 + WTERMSIG(status);
+	}
+}
+
+
+static void execute_command(t_cmd *cmd, char ***env)
 {
 	if (!cmd->argv || !cmd->argv[0])
 		return ;
@@ -47,7 +70,7 @@ static void	execute_command(t_cmd *cmd, char ***env)
 	else if (ft_strncmp(cmd->argv[0], "exit", 5) == 0)
 		builtin_exit(&cmd->argv[1]);
 	else
-		execute_external(cmd->argv, *env);
+		run_external_command(cmd, env);
 }
 
 static void	process_command(char **args, char ***env, char *line)

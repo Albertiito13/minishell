@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:00:53 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 02:05:06 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:10:48 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ static void	execute_builtin_in_child(char **args, char ***my_env)
 	else if (ft_strncmp(args[0], "env", 4) == 0)
 		builtin_env(*my_env);
 }
-
-#include "minishell.h"
 
 static void	exec_child_cmd(t_cmd *cmd, char **my_env)
 {
@@ -85,9 +83,9 @@ void	run_command_in_child(char *segment, int in_fd, int *fd, char **my_env)
 		exit(1);
 	if (apply_redirections(cmd->redirs))
 		exit(1);
+	setup_exec_signals();
 	exec_child_cmd(cmd, my_env);
 }
-
 
 static int	create_child(char *segment, int in_fd, int *fd, char **my_env)
 {
