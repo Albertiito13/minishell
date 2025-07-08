@@ -6,34 +6,11 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:00:53 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 17:10:48 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:24:29 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	is_builtin(char **args)
-{
-	if (!args || !args[0])
-		return (0);
-	if (ft_strncmp(args[0], "echo", 5) == 0)
-		return (1);
-	if (ft_strncmp(args[0], "pwd", 4) == 0)
-		return (1);
-	if (ft_strncmp(args[0], "env", 4) == 0)
-		return (1);
-	return (0);
-}
-
-static void	execute_builtin_in_child(char **args, char ***my_env)
-{
-	if (ft_strncmp(args[0], "echo", 5) == 0)
-		builtin_echo(&args[1]);
-	else if (ft_strncmp(args[0], "pwd", 4) == 0)
-		builtin_pwd();
-	else if (ft_strncmp(args[0], "env", 4) == 0)
-		builtin_env(*my_env);
-}
 
 static void	exec_child_cmd(t_cmd *cmd, char **my_env)
 {
@@ -63,7 +40,7 @@ static void	exec_child_cmd(t_cmd *cmd, char **my_env)
 	}
 }
 
-void	run_command_in_child(char *segment, int in_fd, int *fd, char **my_env)
+void	run_cmd_in_child(char *seg, int in_fd, int *fd, char **my_env)
 {
 	char	**tokens;
 	t_cmd	*cmd;
@@ -77,7 +54,7 @@ void	run_command_in_child(char *segment, int in_fd, int *fd, char **my_env)
 	}
 	if (in_fd != 0)
 		close(in_fd);
-	tokens = parse_line(segment);
+	tokens = parse_line(seg);
 	cmd = parse_command(tokens);
 	if (!cmd)
 		exit(1);
@@ -93,56 +70,46 @@ static int	create_child(char *segment, int in_fd, int *fd, char **my_env)
 
 	pid = fork();
 	if (pid == 0)
-		run_command_in_child(segment, in_fd, fd, my_env);
+		run_cmd_in_child(segment, in_fd, fd, my_env);
 	return (pid);
 }
 
-static void	wait_pipeline(pid_t last_pid)
+static pid_t	setup_pipe_and_fork(char *segment, int *in_fd,
+						int has_next, char **my_env)
 {
-	pid_t	wpid;
-	int		status;
+	int		fd[2];
+	pid_t	pid;
 
-	status = 0;
-	while ((wpid = wait(&status)) > 0)
+	if (has_next)
 	{
-		if (wpid == last_pid)
-		{
-			if (WIFEXITED(status))
-				g_exit_status = WEXITSTATUS(status);
-			else
-				g_exit_status = 1;
-		}
+		pipe(fd);
+		pid = create_child(segment, *in_fd, fd, my_env);
+		close(fd[1]);
+		if (*in_fd != 0)
+			close(*in_fd);
+		*in_fd = fd[0];
 	}
+	else
+	{
+		pid = create_child(segment, *in_fd, NULL, my_env);
+		if (*in_fd != 0)
+			close(*in_fd);
+	}
+	return (pid);
 }
 
 void	execute_pipeline(char **segments, char **my_env)
 {
-	int		fd[2];
 	int		in_fd;
 	int		i;
-	pid_t	pid;
 	pid_t	last_pid;
 
 	in_fd = 0;
 	i = 0;
 	while (segments[i])
 	{
-		if (segments[i + 1])
-		{
-			pipe(fd);
-			pid = create_child(segments[i], in_fd, fd, my_env);
-			close(fd[1]);
-			if (in_fd != 0)
-				close(in_fd);
-			in_fd = fd[0];
-		}
-		else
-		{
-			pid = create_child(segments[i], in_fd, NULL, my_env);
-			if (in_fd != 0)
-				close(in_fd);
-		}
-		last_pid = pid;
+		last_pid = setup_pipe_and_fork(segments[i], &in_fd,
+				segments[i + 1] != NULL, my_env);
 		i++;
 	}
 	wait_pipeline(last_pid);

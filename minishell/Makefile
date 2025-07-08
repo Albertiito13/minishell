@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+         #
+#    By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 00:04:03 by albcamac          #+#    #+#              #
-#    Updated: 2025/07/08 17:58:28 by alegarci         ###   ########.fr        #
+#    Updated: 2025/07/08 22:18:47 by albcamac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC 		= minishell.c \
 				builtins/built_cd.c \
 				execute.c \
 				execute_pipeline.c \
+				execute_pipeline_utils.c \
 				expand_var.c \
 				parse_line.c \
 				env_utils.c \
@@ -29,7 +30,7 @@ SRC 		= minishell.c \
 				redirections/tokens.c \
 				redirections/parse_redirections.c \
 				redirections/redirections.c \
-				redirections/redirections_utils.c
+				redirections/redirections_utils.c \
 
 OBJ 		= $(SRC:.c=.o)
 CC 			= cc

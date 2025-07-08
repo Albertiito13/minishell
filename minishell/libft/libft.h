@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 21:55:10 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/06 17:20:11 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/08 20:52:48 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,6 @@ int		ft_print_unsigned(unsigned int n);
 int		ft_print_hex(unsigned int n, int uppercase);
 long	ft_atol(const char *str);
 int		ft_sqrt(int n);
+int		ft_is_all_spaces(char *str);
 
 #endif

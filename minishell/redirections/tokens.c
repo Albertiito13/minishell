@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:12:38 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/06 17:33:40 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/08 21:59:57 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	is_special_token(const char *s)
 {
 	return (!ft_strncmp(s, ">>", 2) || !ft_strncmp(s, "<<", 2)
-		|| *s == '>' || *s == '<');
+		|| *s == '>' || *s == '<' || *s == '|');
 }
 
 char	*parse_special_token(const char **s)

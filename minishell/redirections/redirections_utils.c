@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 17:01:50 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/08 14:02:50 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 21:51:13 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@ int	redir_input(char *file)
 	{
 		perror(file);
 		g_exit_status = 1;
-		return (1);
+		return (-1);
 	}
 	if (dup2(fd, STDIN_FILENO) < 0)
 	{
 		close(fd);
 		perror("dup2");
 		g_exit_status = 1;
-		return (1);
+		return (-1);
 	}
 	close(fd);
 	return (0);
@@ -50,7 +50,7 @@ int	redir_output(char *file)
 		close(fd);
 		perror("dup2");
 		g_exit_status = 1;
-		return (1);
+		return (-1);
 	}
 	close(fd);
 	return (0);
@@ -72,7 +72,7 @@ int	redir_append(char *file)
 		close(fd);
 		perror("dup2");
 		g_exit_status = 1;
-		return (1);
+		return (-1);
 	}
 	close(fd);
 	return (0);

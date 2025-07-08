@@ -6,11 +6,25 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:39:38 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 18:05:35 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:12:19 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	has_simple_pipe(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+	{
+		if (ft_strncmp(args[i], "|", 2) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 char	*ft_strjoin_free(char *s1, char *s2)
 {
@@ -49,36 +63,12 @@ char	*find_executable(char *cmd, char **envp)
 	return (NULL);
 }
 
-/* void	execute_external(char **args, char **envp)
+void	execute_external(char **argv, char **env)
 {
-	pid_t	pid;
-	char	*path;
+	char		*path;
+	struct stat	sb;
 
-	if (!args[0])
-		return ;
-	if (access(args[0], X_OK) == 0)
-		path = ft_strdup(args[0]);
-	else
-		path = find_executable(args[0], envp);
-	if (!path)
-	{
-		printf("%s: command not found\n", args[0]);
-		return ;
-	}
-	pid = fork();
-	if (pid == 0)
-		execve(path, args, envp);
-	else
-		waitpid(pid, NULL, 0);
-	free(path);
-} */
-
-void execute_external(char **argv, char **env)
-{
-	char *path;
-	struct stat sb;
-
-	if (!argv || !argv[0])
+	if (!argv || !argv[0] || argv[0][0] == '\0')
 		exit(0);
 	if (ft_strchr(argv[0], '/'))
 	{

@@ -6,27 +6,13 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 18:14:03 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:08:55 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int	g_exit_status = 0;
-
-static int	has_simple_pipe(char **args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-	{
-		if (ft_strncmp(args[i], "|", 2) == 0)
-			return (1);
-		i++;
-	}
-	return (0);
-}
 
 static void	run_external_command(t_cmd *cmd, char ***env)
 {
@@ -50,10 +36,9 @@ static void	run_external_command(t_cmd *cmd, char ***env)
 	}
 }
 
-
-static void execute_command(t_cmd *cmd, char ***env)
+static void	execute_command(t_cmd *cmd, char ***env)
 {
-	if (!cmd->argv || !cmd->argv[0])
+	if (!cmd->argv || !cmd->argv[0] || cmd->argv[0][0] == '\0')
 		return ;
 	if (ft_strncmp(cmd->argv[0], "echo", 5) == 0)
 		builtin_echo(&cmd->argv[1]);

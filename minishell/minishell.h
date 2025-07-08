@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 18:12:55 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 22:21:09 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ char			**parse_line(const char *s);
 void			free_split(char **split);
 char			*ft_strjoin_free(char *s1, char *s2);
 char			*expand_var(char *input, char **my_env);
+char			**filter_empty_tokens(char **tokens);
+int				has_simple_pipe(char **args);
 
 void			builtin_echo(char **args);
 void			builtin_pwd(void);
@@ -70,7 +72,10 @@ int				is_valid_identifier(char *s);
 void			execute_external(char **args, char **envp);
 void			execute_pipeline(char **segments, char **my_env);
 char			*find_executable(char *cmd, char **envp);
-void			run_command_in_child(char *segment, int in_fd, int *fd, char **my_env);
+void			run_cmd_in_child(char *seg, int in_fd, int *fd, char **my_env);
+int				is_builtin(char **args);
+void			execute_builtin_in_child(char **args, char ***my_env);
+void			wait_pipeline(pid_t last_pid);
 
 //signals
 void			handle_sigint(int sig);
