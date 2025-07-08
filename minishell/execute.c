@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:39:38 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/04 20:18:18 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/08 18:05:35 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*find_executable(char *cmd, char **envp)
 	return (NULL);
 }
 
-void	execute_external(char **args, char **envp)
+/* void	execute_external(char **args, char **envp)
 {
 	pid_t	pid;
 	char	*path;
@@ -71,4 +71,31 @@ void	execute_external(char **args, char **envp)
 	else
 		waitpid(pid, NULL, 0);
 	free(path);
+} */
+
+void execute_external(char **argv, char **env)
+{
+	char *path;
+	struct stat sb;
+
+	if (!argv || !argv[0])
+		exit(0);
+	if (ft_strchr(argv[0], '/'))
+	{
+		if (access(argv[0], F_OK) != 0)
+			exit(127);
+		if (stat(argv[0], &sb) == 0 && S_ISDIR(sb.st_mode))
+			exit(126);
+		if (access(argv[0], X_OK) != 0)
+			exit(126);
+		execve(argv[0], argv, env);
+		perror("execve");
+		exit(126);
+	}
+	path = find_executable(argv[0], env);
+	if (!path)
+		exit(127);
+	execve(path, argv, env);
+	perror("execve");
+	exit(126);
 }
