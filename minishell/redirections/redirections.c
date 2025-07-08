@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 17:00:02 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/06 17:30:07 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:04:07 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	handle_heredoc(char *delimiter)
 	{
 		line = readline("> ");
 		if (!line || !ft_strcmp(line, delimiter))
-			break;
+			break ;
 		write(pipefd[1], line, ft_strlen(line));
 		write(pipefd[1], "\n", 1);
 		free(line);
@@ -66,7 +66,7 @@ int	apply_redirections(t_redir *redirs)
 
 void	free_cmd(t_cmd *cmd)
 {
-	t_redir *tmp;
+	t_redir	*tmp;
 
 	if (!cmd)
 		return ;
@@ -81,6 +81,3 @@ void	free_cmd(t_cmd *cmd)
 	}
 	free(cmd);
 }
-
-
-

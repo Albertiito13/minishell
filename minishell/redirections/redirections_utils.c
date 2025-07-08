@@ -6,15 +6,17 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 17:01:50 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/08 02:10:54 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:02:50 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int redir_input(char *file)
+int	redir_input(char *file)
 {
-	int fd = open(file, O_RDONLY);
+	int	fd;
+
+	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
 		perror(file);
@@ -32,9 +34,11 @@ int redir_input(char *file)
 	return (0);
 }
 
-int redir_output(char *file)
+int	redir_output(char *file)
 {
-	int fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	int	fd;
+
+	fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 	{
 		perror(file);
@@ -52,9 +56,11 @@ int redir_output(char *file)
 	return (0);
 }
 
-int redir_append(char *file)
+int	redir_append(char *file)
 {
-	int fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	int	fd;
+
+	fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
 		perror(file);
@@ -72,7 +78,7 @@ int redir_append(char *file)
 	return (0);
 }
 
-int redir_heredoc(char *delimiter)
+int	redir_heredoc(char *delimiter)
 {
 	return (handle_heredoc(delimiter));
 }

@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 01:51:35 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:10:02 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	has_simple_pipe(char **args)
 	return (0);
 }
 
-static void execute_command(t_cmd *cmd, char ***env)
+static void	execute_command(t_cmd *cmd, char ***env)
 {
 	if (!cmd->argv || !cmd->argv[0])
 		return ;
@@ -50,7 +50,7 @@ static void execute_command(t_cmd *cmd, char ***env)
 		execute_external(cmd->argv, *env);
 }
 
-static void process_command(char **args, char ***env, char *line)
+static void	process_command(char **args, char ***env, char *line)
 {
 	t_cmd	*cmd;
 	char	**segments;
@@ -78,7 +78,6 @@ static void process_command(char **args, char ***env, char *line)
 		free_cmd(cmd);
 	}
 }
-
 
 static void	main_loop(char ***env)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:47:34 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/06 20:19:09 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/08 14:06:14 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-void handle_sigquit(int sig)
+void	handle_sigquit(int sig)
 {
 	(void)sig;
 }
 
-void setup_prompt_signals(void)
+void	setup_prompt_signals(void)
 {
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void setup_exec_signals(void)
+void	setup_exec_signals(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
@@ -40,9 +40,11 @@ void setup_exec_signals(void)
 
 void	check_child_signal(int status)
 {
+	int	sig;
+
 	if (WIFSIGNALED(status))
 	{
-		int sig = WTERMSIG(status);
+		sig = WTERMSIG(status);
 		if (sig == SIGINT)
 			write(1, "\n", 1);
 		else if (sig == SIGQUIT)
