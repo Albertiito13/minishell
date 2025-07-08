@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   built_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 16:15:15 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/08 17:59:54 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/09 00:21:39 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static char	*extract_key(char *arg)
 static void	update_env(char *arg, char ***env, int key_len)
 {
 	int		j;
+	char	**new_env;
 
 	j = 0;
 	while ((*env)[j])
@@ -38,8 +39,13 @@ static void	update_env(char *arg, char ***env, int key_len)
 		}
 		j++;
 	}
-	*env = add_to_env(*env, arg);
+	new_env = add_to_env(*env, arg);
+	if (!new_env)
+		return ;
+	free_split(*env);
+	*env = new_env;
 }
+
 
 static void	add_env_entry(char *arg, char ***env)
 {

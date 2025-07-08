@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 22:08:55 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 23:32:19 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,14 +95,13 @@ static void	main_loop(char ***env)
 
 	while (1)
 	{
-		setup_prompt_signals();
 		line = readline("minishell$ ");
 		if (!line)
 		{
 			printf("exit\n");
 			break ;
 		}
-		if (*line)
+		if (line)
 			add_history(line);
 		expanded = expand_var(line, *env);
 		args = parse_line(expanded);

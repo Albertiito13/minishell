@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:00:53 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 22:24:29 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 23:41:35 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	run_cmd_in_child(char *seg, int in_fd, int *fd, char **my_env)
 		exit(1);
 	if (apply_redirections(cmd->redirs))
 		exit(1);
-	setup_exec_signals();
 	exec_child_cmd(cmd, my_env);
 }
 
@@ -70,7 +69,10 @@ static int	create_child(char *segment, int in_fd, int *fd, char **my_env)
 
 	pid = fork();
 	if (pid == 0)
+	{
+		setup_exec_signals();
 		run_cmd_in_child(segment, in_fd, fd, my_env);
+	}
 	return (pid);
 }
 
