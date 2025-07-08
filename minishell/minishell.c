@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 00:31:01 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/08 01:51:35 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	g_exit_status = 0;
 
-// para detectar que es un pipe y no entre en conflicto con ||
 static int	has_simple_pipe(char **args)
 {
 	int	i;
@@ -29,9 +28,34 @@ static int	has_simple_pipe(char **args)
 	return (0);
 }
 
-static void	process_command(char **args, char ***env, char *line)
+static void execute_command(t_cmd *cmd, char ***env)
 {
+	if (!cmd->argv || !cmd->argv[0])
+		return ;
+	if (ft_strncmp(cmd->argv[0], "echo", 5) == 0)
+		builtin_echo(&cmd->argv[1]);
+	else if (ft_strncmp(cmd->argv[0], "pwd", 4) == 0)
+		builtin_pwd();
+	else if (ft_strncmp(cmd->argv[0], "env", 4) == 0)
+		builtin_env(*env);
+	else if (ft_strncmp(cmd->argv[0], "unset", 6) == 0)
+		builtin_unset(&cmd->argv[1], env);
+	else if (ft_strncmp(cmd->argv[0], "export", 7) == 0)
+		builtin_export(&cmd->argv[1], env);
+	else if (ft_strncmp(cmd->argv[0], "cd", 3) == 0)
+		builtin_cd(&cmd->argv[1], *env);
+	else if (ft_strncmp(cmd->argv[0], "exit", 5) == 0)
+		builtin_exit(&cmd->argv[1]);
+	else
+		execute_external(cmd->argv, *env);
+}
+
+static void process_command(char **args, char ***env, char *line)
+{
+	t_cmd	*cmd;
 	char	**segments;
+	int		saved_stdin;
+	int		saved_stdout;
 
 	if (has_simple_pipe(args))
 	{
@@ -39,23 +63,22 @@ static void	process_command(char **args, char ***env, char *line)
 		execute_pipeline(segments, *env);
 		free_split(segments);
 	}
-	else if (ft_strncmp(args[0], "echo", 5) == 0)
-		builtin_echo(&args[1]);
-	else if (ft_strncmp(args[0], "pwd", 4) == 0)
-		builtin_pwd();
-	else if (ft_strncmp(args[0], "env", 4) == 0)
-		builtin_env(*env);
-	else if (ft_strncmp(args[0], "unset", 6) == 0)
-		builtin_unset(&args[1], env);
-	else if (ft_strncmp(args[0], "export", 7) == 0)
-		builtin_export(&args[1], env);
-	else if (ft_strncmp(args[0], "cd", 3) == 0)
-		builtin_cd(&args[1], *env);
-	else if (ft_strncmp(args[0], "exit", 5) == 0)
-		builtin_exit(&args[1]);
 	else
-		execute_external(args, *env);
+	{
+		cmd = parse_command(args);
+		if (!cmd)
+			return ;
+		saved_stdin = dup(STDIN_FILENO);
+		saved_stdout = dup(STDOUT_FILENO);
+		if (apply_redirections(cmd->redirs) == 0)
+			execute_command(cmd, env);
+		dup2(saved_stdin, STDIN_FILENO);
+		dup2(saved_stdout, STDOUT_FILENO);
+		(close(saved_stdin), close(saved_stdout));
+		free_cmd(cmd);
+	}
 }
+
 
 static void	main_loop(char ***env)
 {

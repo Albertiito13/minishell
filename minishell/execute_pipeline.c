@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:00:53 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/06 20:20:11 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/08 02:05:06 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,29 +35,59 @@ static void	execute_builtin_in_child(char **args, char ***my_env)
 		builtin_env(*my_env);
 }
 
+#include "minishell.h"
+
+static void	exec_child_cmd(t_cmd *cmd, char **my_env)
+{
+	char	*path;
+
+	if (!cmd->argv || !cmd->argv[0])
+		exit(0);
+	if (is_builtin(cmd->argv))
+	{
+		execute_builtin_in_child(cmd->argv, &my_env);
+		exit(0);
+	}
+	if (access(cmd->argv[0], X_OK) == 0)
+		path = ft_strdup(cmd->argv[0]);
+	else
+		path = find_executable(cmd->argv[0], my_env);
+	if (!path)
+	{
+		printf("%s: command not found\n", cmd->argv[0]);
+		exit(127);
+	}
+	execve(path, cmd->argv, my_env);
+	if (execve(path, cmd->argv, my_env) == -1)
+	{
+		perror("execve");
+		exit(126);
+	}
+}
+
 void	run_command_in_child(char *segment, int in_fd, int *fd, char **my_env)
 {
-	char	**args;
-	char	*path;
+	char	**tokens;
+	t_cmd	*cmd;
 
 	dup2(in_fd, 0);
 	if (fd != NULL)
+	{
 		dup2(fd[1], 1);
-	if (fd != NULL)
-		(close(fd[0]), close(fd[1]));
+		close(fd[0]);
+		close(fd[1]);
+	}
 	if (in_fd != 0)
 		close(in_fd);
-	args = parse_line(segment);
-	if (is_builtin(args))
-		(execute_builtin_in_child(args, &my_env), exit(0));
-	if (access(args[0], X_OK) == 0)
-		path = ft_strdup(args[0]);
-	else
-		path = find_executable(args[0], my_env);
-	if (!path)
-		(printf("%s: command not found\n", args[0]), exit(127));
-	execve(path, args, my_env);
+	tokens = parse_line(segment);
+	cmd = parse_command(tokens);
+	if (!cmd)
+		exit(1);
+	if (apply_redirections(cmd->redirs))
+		exit(1);
+	exec_child_cmd(cmd, my_env);
 }
+
 
 static int	create_child(char *segment, int in_fd, int *fd, char **my_env)
 {
