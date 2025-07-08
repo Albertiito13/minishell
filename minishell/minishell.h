@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 14:08:20 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/08 17:50:47 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ char			**dup_env(char **envp);
 char			*get_env_value(char *var, char **my_env);
 char			**add_to_env(char **env, char *new_var);
 void			builtin_export(char **args, char ***my_env);
+int				is_valid_identifier(char *s);
 
 void			execute_external(char **args, char **envp);
 void			execute_pipeline(char **segments, char **my_env);

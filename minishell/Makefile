@@ -6,20 +6,35 @@
 #    By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 00:04:03 by albcamac          #+#    #+#              #
-#    Updated: 2025/07/06 17:15:08 by alegarci         ###   ########.fr        #
+#    Updated: 2025/07/08 17:58:28 by alegarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= minishell
-SRC 		= minishell.c parse_line.c builtins.c env_utils.c signals/signals.c \
-				execute.c execute_pipeline.c expand_var.c \
-				redirections/tokens.c redirections/parse_redirections.c \
-				redirections/redirections.c redirections/redirections_utils.c
+SRC 		= minishell.c \
+				builtins/built_export.c \
+				builtins/built_export_utils.c \
+				builtins/built_unset.c \
+				builtins/built_echo.c \
+				builtins/built_exit.c \
+				builtins/built_env.c \
+				builtins/built_pwd.c \
+				builtins/built_cd.c \
+				execute.c \
+				execute_pipeline.c \
+				expand_var.c \
+				parse_line.c \
+				env_utils.c \
+				signals/signals.c \
+				redirections/tokens.c \
+				redirections/parse_redirections.c \
+				redirections/redirections.c \
+				redirections/redirections_utils.c
+
 OBJ 		= $(SRC:.c=.o)
 CC 			= cc
 CFLAGS 		= -Wall -Wextra -Werror
 LIBFT_DIR	= libft
-
 
 LIBFT	= $(LIBFT_DIR)/libft.a
 LIBS = -lreadline
