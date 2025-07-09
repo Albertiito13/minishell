@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline_utils.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 22:14:39 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 22:20:54 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:44:58 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	wait_pipeline(pid_t last_pid)
 
 	status = 0;
 	wpid = wait(&status);
+	signal(SIGINT, SIG_IGN);
 	while (wpid > 0)
 	{
 		if (wpid == last_pid)
@@ -55,4 +56,5 @@ void	wait_pipeline(pid_t last_pid)
 		}
 		wpid = wait(&status);
 	}
+	setup_prompt_signals();
 }
