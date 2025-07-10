@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 16:15:15 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/09 00:21:39 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:44:28 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static void	update_env(char *arg, char ***env, int key_len)
 	free_split(*env);
 	*env = new_env;
 }
-
 
 static void	add_env_entry(char *arg, char ***env)
 {
