@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 22:14:39 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/10 17:00:19 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/10 17:07:08 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	is_builtin(char **args)
 		return (1);
 	if (ft_strncmp(args[0], "env", 4) == 0)
 		return (1);
+	else
+		return (0);
 }
 
 void	execute_builtin_in_child(char **args, char ***my_env)
