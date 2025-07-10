@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:00:53 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 23:41:35 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/09 11:42:39 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ static int	create_child(char *segment, int in_fd, int *fd, char **my_env)
 	pid = fork();
 	if (pid == 0)
 	{
-		setup_exec_signals();
 		run_cmd_in_child(segment, in_fd, fd, my_env);
+		setup_exec_signals();
 	}
 	return (pid);
 }

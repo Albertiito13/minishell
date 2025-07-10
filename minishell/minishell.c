@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/10 15:39:24 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/10 16:04:10 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ static void	run_external_command(t_cmd *cmd, char ***env)
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
 		waitpid(pid, &status, 0);
+		setup_prompt_signals();
 		check_child_signal(status);
 		if (WIFEXITED(status))
 			g_exit_status = WEXITSTATUS(status);
