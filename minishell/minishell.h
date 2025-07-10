@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/09 01:00:18 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:47:57 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,9 @@ void			run_cmd_in_child(char *seg, int in_fd, int *fd, char **my_env);
 int				is_builtin(char **args);
 void			execute_builtin_in_child(char **args, char ***my_env);
 void			wait_pipeline(pid_t last_pid);
+void			print_sorted_env(char **env);
+void			increment_shlvl(char ***my_env);
+void			handle_export_arg(char *arg, char ***my_env);
 
 //signals
 void			handle_sigint(int sig);
@@ -85,15 +88,15 @@ void			setup_prompt_signals(void);
 void			setup_exec_signals(void);
 
 //redirections
-int				handle_heredoc(char *delimiter);
-int				apply_redirections(t_redir *redirs);
+int				handle_heredoc(char *delimiter, char **my_env);
+int				apply_redirections(t_redir *redirs, char **my_env);
 void			free_cmd(t_cmd *cmd);
 
 //redirections utils
 int				redir_input(char *file);
 int				redir_output(char *file);
 int				redir_append(char *file);
-int				redir_heredoc(char *delimiter);
+int				redir_heredoc(char *delimiter, char **my_env);
 
 //parse redirections
 int				is_redirection_token(const char *token);

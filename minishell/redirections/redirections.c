@@ -6,13 +6,13 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 17:00:02 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/08 14:04:07 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:06:39 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	handle_heredoc(char *delimiter)
+/* int	handle_heredoc(char *delimiter)
 {
 	int		pipefd[2];
 	char	*line;
@@ -33,9 +33,9 @@ int	handle_heredoc(char *delimiter)
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
 	return (0);
-}
+} */
 
-int	apply_redirections(t_redir *redirs)
+int	apply_redirections(t_redir *redirs, char **my_env)
 {
 	while (redirs)
 	{
@@ -56,7 +56,7 @@ int	apply_redirections(t_redir *redirs)
 		}
 		else if (redirs->type == REDIR_HEREDOC)
 		{
-			if (redir_heredoc(redirs->file))
+			if (redir_heredoc(redirs->file, my_env))
 				return (1);
 		}
 		redirs = redirs->next;

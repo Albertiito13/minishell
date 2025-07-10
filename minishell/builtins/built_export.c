@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 16:15:15 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/10 15:44:28 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/10 22:33:23 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	add_env_entry(char *arg, char ***env)
 	*env = new_env;
 }
 
-static void	handle_export_arg(char *arg, char ***my_env)
+void	handle_export_arg(char *arg, char ***my_env)
 {
 	char	*key;
 	int		key_len;
@@ -89,6 +89,11 @@ void	builtin_export(char **args, char ***my_env)
 {
 	int	i;
 
+	if (!args[0])
+	{
+		print_sorted_env(*my_env);
+		return ;
+	}
 	i = 0;
 	while (args[i])
 	{

@@ -6,7 +6,7 @@
 #    By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 00:04:03 by albcamac          #+#    #+#              #
-#    Updated: 2025/07/09 00:49:26 by albcamac         ###   ########.fr        #
+#    Updated: 2025/07/10 22:50:20 by albcamac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRC 		= minishell.c \
 				redirections/parse_redirections.c \
 				redirections/redirections.c \
 				redirections/redirections_utils.c \
+				redirections/heredoc_utils.c \
 
 OBJ 		= $(SRC:.c=.o)
 CC 			= cc

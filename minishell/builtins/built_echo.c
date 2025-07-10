@@ -6,19 +6,11 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 16:04:27 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/10 19:44:10 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/10 20:19:15 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-/* int	is_valid_n(char *args)
-{
-	int	i;
-
-	i = 0;
-	while
-} */
 
 void	builtin_echo(char **args)
 {

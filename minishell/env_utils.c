@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/02 23:05:31 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/04 02:58:05 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/10 22:32:27 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,23 @@ char	*get_env_value(char *var, char **my_env)
 		i++;
 	}
 	return (NULL);
+}
+
+void	increment_shlvl(char ***my_env)
+{
+	char	*shlvl_val;
+	int		shlvl_num;
+	char	*new_shlvl_str;
+	char	*new_entry;
+
+	shlvl_val = get_env_value("SHLVL", *my_env);
+	if (shlvl_val)
+		shlvl_num = ft_atoi(shlvl_val) + 1;
+	else
+		shlvl_num = 1;
+	new_shlvl_str = ft_itoa(shlvl_num);
+	new_entry = ft_strjoin("SHLVL=", new_shlvl_str);
+	free(new_shlvl_str);
+	handle_export_arg(new_entry, my_env);
+	free(new_entry);
 }

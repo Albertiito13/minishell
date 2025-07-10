@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/10 16:04:10 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:09:43 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static void	process_command(char **args, char ***env, char *line)
 			return ;
 		saved_stdin = dup(STDIN_FILENO);
 		saved_stdout = dup(STDOUT_FILENO);
-		if (apply_redirections(cmd->redirs) == 0)
+		if (apply_redirections(cmd->redirs, *env) == 0)
 			execute_command(cmd, env);
 		dup2(saved_stdin, STDIN_FILENO);
 		dup2(saved_stdout, STDOUT_FILENO);
@@ -123,6 +123,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	my_env = dup_env(envp);
+	increment_shlvl(&my_env);
 	setup_prompt_signals();
 	main_loop(&my_env);
 	free_split(my_env);

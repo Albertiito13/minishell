@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pipeline.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:00:53 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/09 11:42:39 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:06:49 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	run_cmd_in_child(char *seg, int in_fd, int *fd, char **my_env)
 	cmd = parse_command(tokens);
 	if (!cmd)
 		exit(1);
-	if (apply_redirections(cmd->redirs))
+	if (apply_redirections(cmd->redirs, my_env))
 		exit(1);
 	exec_child_cmd(cmd, my_env);
 }

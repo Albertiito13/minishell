@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 17:01:50 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/08 21:51:13 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/10 23:54:34 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	redir_append(char *file)
 	return (0);
 }
 
-int	redir_heredoc(char *delimiter)
+int	redir_heredoc(char *delimiter, char **my_env)
 {
-	return (handle_heredoc(delimiter));
+	return (handle_heredoc(delimiter, my_env));
 }
