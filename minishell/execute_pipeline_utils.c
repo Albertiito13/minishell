@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 22:14:39 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 22:20:54 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/10 15:34:34 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,14 @@ int	is_builtin(char **args)
 		return (1);
 	if (ft_strncmp(args[0], "env", 4) == 0)
 		return (1);
+	if (ft_strncmp(args[0], "unset", 6) == 0)
+		return (1);
+	if (ft_strncmp(args[0], "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(args[0], "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(args[0], "exit", 5) == 0)
+		return (1);
 	return (0);
 }
 
@@ -33,6 +41,14 @@ void	execute_builtin_in_child(char **args, char ***my_env)
 		builtin_pwd();
 	else if (ft_strncmp(args[0], "env", 4) == 0)
 		builtin_env(*my_env);
+	else if (ft_strncmp(args[0], "unset", 6) == 0)
+		builtin_unset(&args[1], my_env);
+	else if (ft_strncmp(args[0], "export", 7) == 0)
+		builtin_export(&args[1], my_env);
+	else if (ft_strncmp(args[0], "cd", 3) == 0)
+		builtin_cd(&args[1], *my_env);
+	else if (ft_strncmp(args[0], "exit", 5) == 0)
+		builtin_exit(&args[1]);
 }
 
 void	wait_pipeline(pid_t last_pid)

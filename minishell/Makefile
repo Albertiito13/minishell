@@ -6,7 +6,7 @@
 #    By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 00:04:03 by albcamac          #+#    #+#              #
-#    Updated: 2025/07/08 22:18:47 by albcamac         ###   ########.fr        #
+#    Updated: 2025/07/09 00:49:26 by albcamac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,13 +39,29 @@ LIBFT_DIR	= libft
 
 LIBFT	= $(LIBFT_DIR)/libft.a
 LIBS = -lreadline
+
+%.o: %.c
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 all: $(NAME)
 
 $(LIBFT):
-	@make -C $(LIBFT_DIR)
+	@make -s -C $(LIBFT_DIR)
 
 $(NAME): $(OBJ) $(LIBFT)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) -L$(LIBFT_DIR) $(LIBS) -lft
+	@echo "\033[1;36m"
+	@echo "  __  __ _       _     _          _ _ "
+	@echo " |  \/  (_)     (_)   | |        | | |"
+	@echo " | \\  / |_ _ __  _ ___| |__   ___| | |"
+	@echo " | |\/| | | '_ \\| / __| '_ \\ / _ \\ | |"
+	@echo " | |  | | | | | | \\__ \\ | | |  __/ | |"
+	@echo " |_|  |_|_|_| |_|_|___/_| |_|\\___|_|_|"
+	@echo ""
+	@echo "    Proyecto de albcamac y alegarci"
+	@echo "\033[0m"
+	@echo "   Minishell compiled successfully!"
+	@echo ""
 
 clean:
 	@rm -f $(OBJ)
