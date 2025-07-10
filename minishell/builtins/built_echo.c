@@ -3,24 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   built_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
+/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 16:04:27 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/08 17:06:32 by alegarci         ###   ########.fr       */
+/*   Updated: 2025/07/10 19:44:10 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+/* int	is_valid_n(char *args)
+{
+	int	i;
+
+	i = 0;
+	while
+} */
+
 void	builtin_echo(char **args)
 {
 	int	i;
 	int	newline;
+	int	j;
 
 	i = 0;
 	newline = 1;
-	if (args[0] && ft_strncmp(args[0], "-n", 3) == 0)
+	while (args[i] && ft_strncmp(args[i], "-n", 2) == 0)
 	{
+		j = 2;
+		while (args[i][j] == 'n')
+			j++;
+		if (args[i][j] != 0)
+			break ;
 		newline = 0;
 		i++;
 	}
