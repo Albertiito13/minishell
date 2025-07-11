@@ -1,0 +1,4 @@
+export caca='"hola"'
+$'caca' // $ cuando no encuentra nada se sustituye por nada
+! $ $ $ $ != $''$''$''
+! echo $caca'holamundo"' // bash hace primero comillas y luego expansiones

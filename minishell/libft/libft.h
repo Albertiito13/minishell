@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 21:55:10 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 20:52:48 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:15:07 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,6 @@ int		ft_print_hex(unsigned int n, int uppercase);
 long	ft_atol(const char *str);
 int		ft_sqrt(int n);
 int		ft_is_all_spaces(char *str);
+char	*ft_strcpy(char *dst, const char *src);
 
 #endif

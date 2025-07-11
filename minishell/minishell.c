@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/10 23:09:43 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:34:59 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,10 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	my_env = dup_env(envp);
+	if (!envp || !*envp)
+		my_env = create_default_env();
+	else
+		my_env = dup_env(envp);
 	increment_shlvl(&my_env);
 	setup_prompt_signals();
 	main_loop(&my_env);

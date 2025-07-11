@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/10 23:47:57 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:40:09 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void			builtin_env(char **envp);
 void			builtin_exit(char **args);
 void			builtin_cd(char **args, char **envp);
 void			builtin_unset(char **args, char ***my_env);
+char			**create_default_env(void);
 char			**dup_env(char **envp);
 char			*get_env_value(char *var, char **my_env);
 char			**add_to_env(char **env, char *new_var);
