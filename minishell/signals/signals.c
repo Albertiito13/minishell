@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:47:34 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/10 23:47:40 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/13 13:58:43 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	handle_sigint(int sig)
 {
 	(void)sig;
+	g_exit_status = 130;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);

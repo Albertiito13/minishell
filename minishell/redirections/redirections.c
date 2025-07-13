@@ -3,81 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 17:00:02 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/10 23:06:39 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/13 15:53:20 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/* int	handle_heredoc(char *delimiter)
+static int	handle_input_redir(t_redir *r)
 {
-	int		pipefd[2];
-	char	*line;
+	return (redir_input(r->file));
+}
 
-	if (pipe(pipefd) == -1)
-		return (perror("pipe"), 1);
-	while (1)
-	{
-		line = readline("> ");
-		if (!line || !ft_strcmp(line, delimiter))
-			break ;
-		write(pipefd[1], line, ft_strlen(line));
-		write(pipefd[1], "\n", 1);
-		free(line);
-	}
-	free(line);
-	close(pipefd[1]);
-	dup2(pipefd[0], STDIN_FILENO);
-	close(pipefd[0]);
-	return (0);
-} */
-
-int	apply_redirections(t_redir *redirs, char **my_env)
+static int	handle_output_redir(t_redir *r)
 {
-	while (redirs)
-	{
-		if (redirs->type == REDIR_IN)
-		{
-			if (redir_input(redirs->file))
-				return (1);
-		}
-		else if (redirs->type == REDIR_OUT)
-		{
-			if (redir_output(redirs->file))
-				return (1);
-		}
-		else if (redirs->type == REDIR_APPEND)
-		{
-			if (redir_append(redirs->file))
-				return (1);
-		}
-		else if (redirs->type == REDIR_HEREDOC)
-		{
-			if (redir_heredoc(redirs->file, my_env))
-				return (1);
-		}
-		redirs = redirs->next;
-	}
+	return (redir_output(r->file));
+}
+
+static int	handle_append_redir(t_redir *r)
+{
+	return (redir_append(r->file));
+}
+
+static int	handle_heredoc_redir(t_redir *r, char **env)
+{
+	if (redir_heredoc(r->file, env))
+		return (1);
+	if (g_exit_status == 130)
+		return (1);
 	return (0);
 }
 
-void	free_cmd(t_cmd *cmd)
+int	apply_redirections(t_redir *r, char **env)
 {
-	t_redir	*tmp;
-
-	if (!cmd)
-		return ;
-	if (cmd->argv)
-		free_split(cmd->argv);
-	while (cmd->redirs)
+	while (r)
 	{
-		tmp = cmd->redirs->next;
-		free(cmd->redirs->file);
-		free(cmd->redirs);
-		cmd->redirs = tmp;
+		if (r->type == REDIR_IN && handle_input_redir(r))
+			return (1);
+		else if (r->type == REDIR_OUT && handle_output_redir(r))
+			return (1);
+		else if (r->type == REDIR_APPEND && handle_append_redir(r))
+			return (1);
+		else if (r->type == REDIR_HEREDOC && handle_heredoc_redir(r, env))
+			return (1);
+		r = r->next;
 	}
-	free(cmd);
+	return (0);
 }

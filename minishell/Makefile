@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+         #
+#    By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 00:04:03 by albcamac          #+#    #+#              #
-#    Updated: 2025/07/11 16:22:13 by albcamac         ###   ########.fr        #
+#    Updated: 2025/07/13 12:46:14 by alegarci         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,13 +27,14 @@ SRC 		= minishell.c \
 				parse_line.c \
 				env_utils.c \
 				signals/signals.c \
+				signals/signal_utils.c \
 				redirections/tokens.c \
 				redirections/parse_redirections.c \
 				redirections/redirections.c \
 				redirections/redirections_utils.c \
 				redirections/heredoc_utils.c \
 				env_default.c
-
+				
 OBJ 		= $(SRC:.c=.o)
 CC 			= cc
 CFLAGS 		= -Wall -Wextra -Werror

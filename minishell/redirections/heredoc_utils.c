@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 22:45:01 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/10 23:56:32 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/14 00:28:06 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,65 +24,83 @@ static char	*remove_quotes(char *str)
 	return (ft_strdup(str));
 }
 
-static int	should_expand_heredoc(char *delimiter, char **clean_delim)
+static int	should_expand_heredoc(char *delimiter, char **cl_del)
 {
 	if (ft_strchr(delimiter, '\'') || ft_strchr(delimiter, '"'))
 	{
-		*clean_delim = remove_quotes(delimiter);
+		*cl_del = remove_quotes(delimiter);
 		return (0);
 	}
-	*clean_delim = ft_strdup(delimiter);
+	*cl_del = ft_strdup(delimiter);
 	return (1);
 }
 
-static void	write_heredoc_line(char *line,
-	int should_expand, int fd, char **my_env)
-{
-	char	*tmp;
-
-	if (should_expand)
-	{
-		tmp = expand_var(line, my_env);
-		write(fd, tmp, ft_strlen(tmp));
-		write(fd, "\n", 1);
-		free(tmp);
-	}
-	else
-	{
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-	}
-}
-
-static void	process_heredoc_input(int fd, char *clean_delim,
-	int should_expand, char **my_env)
+static void	child_heredoc(int fd, char *clean_delim,
+	int should_expand, char **env)
 {
 	char	*line;
+	char	*expanded;
 
+	signal(SIGINT, handle_heredoc_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		line = readline("> ");
 		if (!line || !ft_strcmp(line, clean_delim))
 			break ;
-		write_heredoc_line(line, should_expand, fd, my_env);
+		if (should_expand)
+		{
+			expanded = expand_var(line, env);
+			write(fd, expanded, ft_strlen(expanded));
+			write(fd, "\n", 1);
+			free(expanded);
+		}
+		else
+			(write(fd, line, ft_strlen(line)), write(fd, "\n", 1));
 		free(line);
 	}
 	free(line);
+	exit(0);
 }
 
-int	handle_heredoc(char *delimiter, char **my_env)
+static int	handle_heredoc_parent(pid_t pid, int *pipefd, char *clean_delim)
+{
+	int	status;
+
+	close(pipefd[1]);
+	waitpid(pid, &status, 0);
+	setup_prompt_signals();
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+	{
+		close(pipefd[0]);
+		g_exit_status = 130;
+		free(clean_delim);
+		return (1);
+	}
+	dup2(pipefd[0], STDIN_FILENO);
+	close(pipefd[0]);
+	free(clean_delim);
+	return (0);
+}
+
+int	handle_heredoc(char *delimiter, char **env)
 {
 	int		pipefd[2];
 	int		should_expand;
 	char	*clean_delim;
+	pid_t	pid;
 
+	g_exit_status = 0;
 	should_expand = should_expand_heredoc(delimiter, &clean_delim);
 	if (pipe(pipefd) == -1)
 		return (perror("pipe"), 1);
-	process_heredoc_input(pipefd[1], clean_delim, should_expand, my_env);
-	free(clean_delim);
-	close(pipefd[1]);
-	dup2(pipefd[0], STDIN_FILENO);
-	close(pipefd[0]);
-	return (0);
+	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), close(pipefd[0]), close(pipefd[1]), 1);
+	if (pid == 0)
+	{
+		close(pipefd[0]);
+		child_heredoc(pipefd[1], clean_delim, should_expand, env);
+	}
+	return (handle_heredoc_parent(pid, pipefd, clean_delim));
 }

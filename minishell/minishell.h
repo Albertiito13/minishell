@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/11 16:40:09 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/13 12:57:00 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/stat.h>
-
+# include <termios.h>
+# include <sys/ioctl.h>
 # include "libft/libft.h"
 
 extern int	g_exit_status;
@@ -87,6 +88,8 @@ void			handle_sigquit(int sig);
 void			check_child_signal(int status);
 void			setup_prompt_signals(void);
 void			setup_exec_signals(void);
+void			handle_heredoc_sigint(int sig);
+void			clear_stdin_buffer(void);
 
 //redirections
 int				handle_heredoc(char *delimiter, char **my_env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:12:38 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/08 21:59:57 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/13 15:52:38 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,6 @@ char	*parse_special_token(const char **s)
 	return (token);
 }
 
-// SIMPLEMENTE TESTEO DEL PARSER DE REDIRECCIONES
-/* void	print_tokens(char **tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i])
-	{
-		printf("token[%d]: \"%s\"\n", i, tokens[i]);
-		i++;
-	}
-} */
-
 int	process_token(char **tokens, int *i, t_cmd *cmd, t_list **args)
 {
 	t_redir	*redir;
@@ -62,4 +49,22 @@ int	process_token(char **tokens, int *i, t_cmd *cmd, t_list **args)
 	else
 		ft_lstadd_back(args, ft_lstnew(ft_strdup(tokens[*i])));
 	return (1);
+}
+
+void	free_cmd(t_cmd *cmd)
+{
+	t_redir	*tmp;
+
+	if (!cmd)
+		return ;
+	if (cmd->argv)
+		free_split(cmd->argv);
+	while (cmd->redirs)
+	{
+		tmp = cmd->redirs->next;
+		free(cmd->redirs->file);
+		free(cmd->redirs);
+		cmd->redirs = tmp;
+	}
+	free(cmd);
 }
