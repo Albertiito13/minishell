@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alegarci <alegarci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:12:38 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/14 23:02:53 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/15 00:53:46 by alegarci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	handle_heredoc_signal(int sig)
 	rl_replace_line("", 0);
 	rl_done = 1;
 }
+
 void	free_cmd(t_cmd *cmd)
 {
 	t_redir	*tmp;
