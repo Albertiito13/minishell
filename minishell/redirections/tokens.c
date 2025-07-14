@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:12:38 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/14 16:01:34 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/14 23:02:53 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,19 +35,6 @@ char	*parse_special_token(const char **s)
 	return (token);
 }
 
-// SIMPLEMENTE TESTEO DEL PARSER DE REDIRECCIONES
-/* void	print_tokens(char **tokens)
-{
-	int	i;
-
-	i = 0;
-	while (tokens[i])
-	{
-		printf("token[%d]: \"%s\"\n", i, tokens[i]);
-		i++;
-	}
-} */
-
 int	process_token(char **tokens, int *i, t_cmd *cmd, t_list **args)
 {
 	t_redir	*redir;
@@ -71,4 +58,21 @@ void	handle_heredoc_signal(int sig)
 	g_exit_status = 130;
 	rl_replace_line("", 0);
 	rl_done = 1;
+}
+void	free_cmd(t_cmd *cmd)
+{
+	t_redir	*tmp;
+
+	if (!cmd)
+		return ;
+	if (cmd->argv)
+		free_split(cmd->argv);
+	while (cmd->redirs)
+	{
+		tmp = cmd->redirs->next;
+		free(cmd->redirs->file);
+		free(cmd->redirs);
+		cmd->redirs = tmp;
+	}
+	free(cmd);
 }

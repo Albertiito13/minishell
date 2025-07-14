@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 17:47:34 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/13 00:49:20 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/14 23:03:26 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	handle_sigint(int sig)
 {
 	(void)sig;
+	g_exit_status = 130;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_exit_status = 130;
 }
 
 void	handle_sigquit(int sig)

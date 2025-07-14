@@ -6,7 +6,7 @@
 #    By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 00:04:03 by albcamac          #+#    #+#              #
-#    Updated: 2025/07/11 18:57:35 by albcamac         ###   ########.fr        #
+#    Updated: 2025/07/14 22:59:15 by albcamac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC 		= minishell.c \
 				parse_line.c \
 				env_utils.c \
 				signals/signals.c \
+				signals/signal_utils.c \
 				redirections/tokens.c \
 				redirections/parse_redirections.c \
 				redirections/redirections.c \
