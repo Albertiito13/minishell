@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:47:42 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/11 16:34:59 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/14 22:51:33 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,12 @@ static void	execute_command(t_cmd *cmd, char ***env)
 	else if (ft_strncmp(cmd->argv[0], "pwd", 4) == 0)
 		builtin_pwd();
 	else if (ft_strncmp(cmd->argv[0], "env", 4) == 0)
+	{
+		if (cmd->argv[1])
+			return ((void)(ft_putstr_fd("Not such file or descriptor\n", 2),
+				g_exit_status = 127));
 		builtin_env(*env);
+	}
 	else if (ft_strncmp(cmd->argv[0], "unset", 6) == 0)
 		builtin_unset(&cmd->argv[1], env);
 	else if (ft_strncmp(cmd->argv[0], "export", 7) == 0)
@@ -96,6 +101,7 @@ static void	main_loop(char ***env)
 	char	**args;
 	char	*expanded;
 
+	rl_bind_key('\t', NULL);
 	while (1)
 	{
 		line = readline("minishell$ ");
