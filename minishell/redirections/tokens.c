@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/06 13:12:38 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/08 21:59:57 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:01:34 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,13 @@ int	process_token(char **tokens, int *i, t_cmd *cmd, t_list **args)
 	else
 		ft_lstadd_back(args, ft_lstnew(ft_strdup(tokens[*i])));
 	return (1);
+}
+
+void	handle_heredoc_signal(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	g_exit_status = 130;
+	rl_replace_line("", 0);
+	rl_done = 1;
 }

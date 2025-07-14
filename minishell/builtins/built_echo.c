@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 16:04:27 by alegarci          #+#    #+#             */
-/*   Updated: 2025/07/10 20:19:15 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:41:01 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,11 @@ void	builtin_echo(char **args)
 	}
 	while (args[i])
 	{
-		ft_printf("%s", args[i]);
+		(ft_printf("%s", args[i]), g_exit_status = 0);
 		if (args[i + 1])
 			ft_printf(" ");
 		i++;
 	}
 	if (newline)
-		ft_printf("\n");
+		(ft_printf("\n"), g_exit_status = 0);
 }

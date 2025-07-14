@@ -6,7 +6,7 @@
 #    By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 00:04:03 by albcamac          #+#    #+#              #
-#    Updated: 2025/07/11 16:22:13 by albcamac         ###   ########.fr        #
+#    Updated: 2025/07/11 18:57:35 by albcamac         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ SRC 		= minishell.c \
 
 OBJ 		= $(SRC:.c=.o)
 CC 			= cc
-CFLAGS 		= -Wall -Wextra -Werror
+CFLAGS 		= -Wall -Wextra -Werror -fsanitize=address -g3
 LIBFT_DIR	= libft
 
 LIBFT	= $(LIBFT_DIR)/libft.a

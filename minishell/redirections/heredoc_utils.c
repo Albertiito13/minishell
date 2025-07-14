@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 22:45:01 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/10 23:56:32 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:02:09 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	process_heredoc_input(int fd, char *clean_delim,
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || !ft_strcmp(line, clean_delim))
+		if (!line || g_exit_status == 130 || !ft_strcmp(line, clean_delim))
 			break ;
 		write_heredoc_line(line, should_expand, fd, my_env);
 		free(line);
@@ -76,6 +76,9 @@ int	handle_heredoc(char *delimiter, char **my_env)
 	int		should_expand;
 	char	*clean_delim;
 
+	g_exit_status = 0;
+	signal(SIGINT, handle_heredoc_signal);
+	signal(SIGQUIT, SIG_IGN);
 	should_expand = should_expand_heredoc(delimiter, &clean_delim);
 	if (pipe(pipefd) == -1)
 		return (perror("pipe"), 1);

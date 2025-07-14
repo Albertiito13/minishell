@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/28 15:45:20 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/11 16:40:09 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/14 22:23:55 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <sys/stat.h>
 
 # include "libft/libft.h"
 
@@ -98,6 +97,7 @@ int				redir_input(char *file);
 int				redir_output(char *file);
 int				redir_append(char *file);
 int				redir_heredoc(char *delimiter, char **my_env);
+void			handle_heredoc_signal(int sig);
 
 //parse redirections
 int				is_redirection_token(const char *token);

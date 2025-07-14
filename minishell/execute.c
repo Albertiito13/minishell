@@ -6,7 +6,7 @@
 /*   By: albcamac <albcamac@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/03 16:39:38 by albcamac          #+#    #+#             */
-/*   Updated: 2025/07/08 22:12:19 by albcamac         ###   ########.fr       */
+/*   Updated: 2025/07/14 16:47:31 by albcamac         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ char	*find_executable(char *cmd, char **envp)
 void	execute_external(char **argv, char **env)
 {
 	char		*path;
-	struct stat	sb;
 
 	if (!argv || !argv[0] || argv[0][0] == '\0')
 		exit(0);
@@ -74,8 +73,6 @@ void	execute_external(char **argv, char **env)
 	{
 		if (access(argv[0], F_OK) != 0)
 			exit(127);
-		if (stat(argv[0], &sb) == 0 && S_ISDIR(sb.st_mode))
-			exit(126);
 		if (access(argv[0], X_OK) != 0)
 			exit(126);
 		execve(argv[0], argv, env);
@@ -84,7 +81,8 @@ void	execute_external(char **argv, char **env)
 	}
 	path = find_executable(argv[0], env);
 	if (!path)
-		exit(127);
+		(ft_putstr_fd("command not found\n", 2), exit(127));
+	setup_prompt_signals();
 	execve(path, argv, env);
 	perror("execve");
 	exit(126);
